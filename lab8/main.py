@@ -99,8 +99,15 @@ def process_image(path: str):
     plt.figure(); plt.hist(L_eq_gray.ravel(), bins=256); plt.title("L после");
     plt.savefig(os.path.join(DST_DIR, f"{name}_hist_after.png")); plt.close()
 
-    img_ngl = (np.log1p(S_ngl) / np.log1p(S_ngl).max() * 255).astype(np.uint8)
-    Image.fromarray(img_ngl).save(os.path.join(DST_DIR, f"{name}_ngldm.png"))
+    plt.figure(figsize=(10, 6))
+    plt.imshow(np.log1p(S_ngl), cmap='viridis', aspect='auto')
+    plt.colorbar(label='Log(count)')
+    plt.title("NGLDM Matrix (log scale)")
+    plt.xlabel("Dependence count")
+    plt.ylabel("Gray level")
+    plt.tight_layout()
+    plt.savefig(os.path.join(DST_DIR, f"{name}_ngldm.png"), dpi=100)
+    plt.close()
 
     with open(os.path.join(DST_DIR, f"{name}_features.txt"), "w", encoding="utf-8") as f:
         f.write(f"NN до: {NN0:.4f}\nSM до: {SM0:.4f}\nENT до: {ENT0:.4f}\n")

@@ -4,7 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="31eb0953-0def-4167-ba51-0bf2b1c8a8df" name="Changes" comment="" />
+    <list default="true" id="31eb0953-0def-4167-ba51-0bf2b1c8a8df" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab8/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/brick_color_eq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/brick_features.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/brick_gray.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/brick_gray_eq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/brick_hist_after.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/brick_hist_before.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/brick_ngldm.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/brick_orig.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/sun_color_eq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/sun_features.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/sun_gray.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/sun_gray_eq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/sun_hist_after.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/sun_hist_before.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/sun_ngldm.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/sun_orig.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/wallpaper_color_eq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/wallpaper_features.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/wallpaper_gray.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/wallpaper_gray_eq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/wallpaper_hist_after.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/wallpaper_hist_before.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/wallpaper_ngldm.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab8/pictures_results/wallpaper_orig.png" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +73,7 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/matve/PycharmProjects/AVIP-MEPhI/AVIP-MEPhI&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.main (4)">
+  <component name="RunManager" selected="Python.main (3)">
     <configuration name="lab7_classification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="AVIP-MEPhI" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -175,9 +202,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (3)" />
         <item itemvalue="Python.main (4)" />
         <item itemvalue="Python.main (5)" />
-        <item itemvalue="Python.main (3)" />
         <item itemvalue="Python.lab7_classification" />
         <item itemvalue="Python.main (2)" />
       </list>
