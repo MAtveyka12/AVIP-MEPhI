@@ -2,24 +2,24 @@ import os
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
+import cv2
+from sklearn.preprocessing import StandardScaler
 
 # Параметры
 ALPHABET = list("аәбвгғдеёжзийкқлмнңоөпрстуұүфхһцчшщъыіьэюя")
-PHRASE_GT = "мен сені мәңгі сүйемін"
+PHRASE_GT = "мены сені мәңгі сүйемін"
 SIZE = (64, 64)
 
 ALPHABET_DIR = Path("alphabet")
-SRC_PATH = Path("pictures_src/phrase1.bmp")
+SRC_PATH = Path("pictures_src/phrase.bmp")
 DST_DIR = Path("pictures_results")
 os.makedirs(DST_DIR, exist_ok=True)
 
 def to_binary(img_or_path) -> np.ndarray:
-    """Бинаризация изображения (1 — черный)."""
     img = Image.open(img_or_path).convert("L")
     return (np.array(img) < 128).astype(np.uint8)
 
 def normalize_bin(arr: np.ndarray, size: tuple[int, int] = SIZE) -> np.ndarray:
-    """Центрирование и масштабирование изображения символа."""
     ys, xs = np.nonzero(arr)
     if ys.size == 0:
         return np.zeros(size, dtype=np.uint8)
@@ -38,8 +38,8 @@ def normalize_bin(arr: np.ndarray, size: tuple[int, int] = SIZE) -> np.ndarray:
     img = img.resize(size, Image.NEAREST)
     return (np.array(img) < 128).astype(np.uint8)
 
+
 def segment_by_profiles(bin_img: np.ndarray, empty_thresh: int = 1):
-    """Сегментация строки на символы."""
     h, w = bin_img.shape
     vert = bin_img.sum(axis=0)
     splits, in_char = [], False
@@ -62,18 +62,29 @@ def segment_by_profiles(bin_img: np.ndarray, empty_thresh: int = 1):
             boxes.append((x0, ys[0], x1, ys[-1]))
     return boxes
 
+
 def extract_features(arr: np.ndarray) -> np.ndarray:
-    """Извлекает признаки: масса, центр тяжести, осевые моменты."""
     ys, xs = np.nonzero(arr)
     if ys.size == 0:
-        return np.zeros(6)
+        return np.zeros(10)
+
     mass = len(xs)
     x_c = xs.mean()
     y_c = ys.mean()
-    x_m = ((xs - x_c)**2).mean()
-    y_m = ((ys - y_c)**2).mean()
+    x_m = ((xs - x_c) ** 2).mean()
+    y_m = ((ys - y_c) ** 2).mean()
     xy_m = ((xs - x_c) * (ys - y_c)).mean()
-    return np.array([mass, x_c, y_c, x_m, y_m, xy_m])
+
+    h, w = arr.shape
+    density = mass / (h * w)
+    aspect_ratio = h / w if w != 0 else 0
+
+    img = (arr * 255).astype(np.uint8)
+    contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    hu = cv2.HuMoments(cv2.moments(contours[0])).flatten() if contours else np.zeros(7)
+
+    return np.concatenate(([mass, x_c, y_c, x_m, y_m, xy_m, density, aspect_ratio], hu[:2]))
+
 
 def load_templates():
     feats, labels = [], []
@@ -84,20 +95,27 @@ def load_templates():
         feats.append(feat)
         labels.append(ch)
     feats = np.array(feats)
-    feats /= np.linalg.norm(feats, axis=1, keepdims=True) + 1e-8  # нормализация
-    return feats, labels
+    scaler = StandardScaler()
+    feats = scaler.fit_transform(feats)
+    return feats, labels, scaler
 
-def recognise_image(path: Path, template_feats: np.ndarray, labels: list[str]):
+
+def recognise_image(path: Path, template_feats: np.ndarray, labels: list[str], scaler, space_thresh: int = 20):
     bin_img = to_binary(path)
     boxes = segment_by_profiles(bin_img)
     boxes.sort(key=lambda b: b[0])
     predictions, all_hypotheses = [], []
+    last_x1 = None
 
     for x0, y0, x1, y1 in boxes:
+        if last_x1 is not None and (x0 - last_x1) > space_thresh:
+            predictions.append(" ")
+        last_x1 = x1
+
         sub = bin_img[y0:y1+1, x0:x1+1]
         arr = normalize_bin(sub)
         feat = extract_features(arr)
-        feat /= np.linalg.norm(feat) + 1e-8
+        feat = scaler.transform([feat])[0]
 
         dists = np.linalg.norm(template_feats - feat, axis=1)
         similarities = 1 / (1 + dists)
@@ -109,6 +127,7 @@ def recognise_image(path: Path, template_feats: np.ndarray, labels: list[str]):
 
     return predictions, all_hypotheses, boxes
 
+
 def accuracy(pred: list[str], gt: str):
     gt = [c for c in gt if c != ' ']
     pred = [c for c in pred if c != ' ']
@@ -116,12 +135,13 @@ def accuracy(pred: list[str], gt: str):
     errs = sum(1 for a, b in zip(pred, gt) if a != b)
     return errs, 100 * (1 - errs / m)
 
+
 def main():
     print("[1] Загрузка шаблонов признаков…")
-    template_feats, labels = load_templates()
+    template_feats, labels, scaler = load_templates()
 
     print("[2] Распознавание изображения…")
-    preds, all_hyps, boxes = recognise_image(SRC_PATH, template_feats, labels)
+    preds, all_hyps, boxes = recognise_image(SRC_PATH, template_feats, labels, scaler)
     recog_str = "".join(preds)
     errs, pct = accuracy(preds, PHRASE_GT)
 
@@ -130,19 +150,19 @@ def main():
     print(f"Ошибок     : {errs}/{len(PHRASE_GT)} | Точность: {pct:.2f}%")
 
     print("[3] Сохранение результатов…")
-    hyp_path = DST_DIR / "hypotheses1.txt"
+    hyp_path = DST_DIR / "hypotheses.txt"
     with hyp_path.open("w", encoding="utf-8") as f:
         for i, hyp in enumerate(all_hyps, 1):
             f.write(f"{i}: {hyp}\n")
 
-    with open(DST_DIR / "best_prediction1.txt", "w", encoding="utf-8") as f:
+    with open(DST_DIR / "best_prediction.txt", "w", encoding="utf-8") as f:
         f.write(recog_str)
 
     img = Image.open(SRC_PATH).convert("RGB")
     draw = ImageDraw.Draw(img)
     for box in boxes:
         draw.rectangle([(box[0], box[1]), (box[2], box[3])], outline="red", width=1)
-    img.save(DST_DIR / "phrase_segmented1.bmp")
+    img.save(DST_DIR / "phrase_segmented.bmp")
 
     print("[✓] Готово!")
 
