@@ -6,6 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="31eb0953-0def-4167-ba51-0bf2b1c8a8df" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/lab10/results/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/f0_a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/f0_dog.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/f0_i.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/peaks_a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/peaks_dog.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/peaks_i.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/report.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/spec_a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/spec_dog.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab10/results/spec_i.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +59,7 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/matve/PycharmProjects/AVIP-MEPhI/AVIP-MEPhI&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.lab7_classification">
+  <component name="RunManager" selected="Python.main (4)">
     <configuration name="lab7_classification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="AVIP-MEPhI" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -177,11 +188,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (4)" />
         <item itemvalue="Python.lab7_classification" />
         <item itemvalue="Python.main (2)" />
         <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.main (3)" />
-        <item itemvalue="Python.main (4)" />
       </list>
     </recent_temporary>
   </component>
